@@ -1,5 +1,8 @@
 package io.github.bi0qaw.biosphere.expression;
 
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
@@ -8,6 +11,12 @@ import io.github.bi0qaw.biosphere.util.LocationLib;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
+
+@Name("Location Path")
+@Description("Creates a path between the locations. The density value controls the amount of points. A higher number increases the amount of points. A density of 1 corresponds to 1 point per block.")
+@Examples({"set {_polygon::*} to polygon at player with 7 points and radius 3",
+			"set {_path::*} to path between {_polygon::*} with density 5",
+			"show happy villager at {_path::*}"})
 public class ExprLocationPath extends SimpleExpression<Location> {
 
 	private Expression<Location> locations;

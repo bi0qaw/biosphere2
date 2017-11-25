@@ -1,7 +1,7 @@
 # Biosphere2
 Biosphere2 is a [Skript](https://github.com/bensku/Skript) addon that adds concise syntax to the [Skript](https://github.com/bensku/Skript) language for all kind of location and vector manipulations.
 
-#### Current Version: 1.0.1 (2017-11-25)
+#### [Current Version: 1.0.1](https://github.com/bi0qaw/biosphere2/releases) (2017-11-25)
 
 Head over to the [wiki](https://github.com/bi0qaw/biosphere2/wiki) for an extensive documentation of Biosphere2's features.
 Syntax documentation can also be found on:

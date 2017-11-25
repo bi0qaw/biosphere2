@@ -50,11 +50,12 @@ public class ExprVectorReflection extends SimpleExpression<Vector> {
 	@Override
 	@Nullable
 	protected Vector[] get(Event e) {
+		Vector[] clones = VectorLib.clone(vectors.getArray(e));
 		if (direction == null) {
-			return VectorLib.pointReflection(vectors.getArray(e).clone(), center.getSingle(e));
+			return VectorLib.pointReflection(clones, center.getSingle(e));
 		}
 		else {
-			return VectorLib.reflection(vectors.getArray(e).clone(), center.getSingle(e), direction.getSingle(e));
+			return VectorLib.reflection(clones, center.getSingle(e), direction.getSingle(e));
 		}
 	}
 }

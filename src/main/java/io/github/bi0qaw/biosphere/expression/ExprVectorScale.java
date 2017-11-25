@@ -59,10 +59,10 @@ public class ExprVectorScale extends SimpleExpression<Vector> {
 	protected Vector[] get(Event e) {
 		double f = factor.getSingle(e).doubleValue();
 		if (direction == null) {
-			return VectorLib.scale(vectors.getArray(e).clone(), f);
+			return VectorLib.scale(VectorLib.clone(vectors.getArray(e).clone()), f);
 		}
 		else {
-			return VectorLib.scaleDirectional(vectors.getArray(e).clone(), direction.getSingle(e), f);
+			return VectorLib.scaleDirectional(VectorLib.clone(vectors.getArray(e)), direction.getSingle(e), f);
 		}
 	}
 }

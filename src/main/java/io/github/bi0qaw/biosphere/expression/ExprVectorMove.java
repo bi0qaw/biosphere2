@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 @Name("Vector Offset")
 @Description("Offset vectors by other vectors.")
 @Examples({"set {_circle::*} to circle with radius 1 and density 5",
-			"set {_offset::*} to {_circle::*} offset by vector 1, 2, 3",
+			"set {_offset::*} to {_circle::*} moved by vector 1, 2, 3",
 			"#Moves the circle from the origin (vector 0, 0, 0) to the position at 1, 2, 3"})
 public class ExprVectorMove extends SimpleExpression<Vector> {
 
@@ -54,6 +54,6 @@ public class ExprVectorMove extends SimpleExpression<Vector> {
 		for (Vector v: o) {
 			totalOffset.add(v);
 		}
-		return VectorLib.offset(vectors.getArray(e).clone(), totalOffset);
+		return VectorLib.move(VectorLib.clone(vectors.getArray(e)), totalOffset);
 	}
 }

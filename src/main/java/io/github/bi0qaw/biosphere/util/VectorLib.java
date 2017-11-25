@@ -50,6 +50,18 @@ public class VectorLib {
 		return getPolygon(n, radius);
 	}
 
+	public static Vector[] getPath(Vector[] vectors, double density) {
+		List<Vector> path = new ArrayList<Vector>();
+		int length = vectors.length;
+		if (length < 2) {
+			return vectors;
+		}
+		for (int i = 0; i < length - 1; i++) {
+			path.addAll(Arrays.asList(linkLine(vectors[i], vectors[i+1], density)));
+		}
+		return  path.toArray(new Vector[path.size()]);
+	}
+
 	public static Vector[] getPolygon(int points, double radius) {
 		float deltaAngle = 360 / (float) points;
 		Vector[] vectors = new Vector[points];
@@ -106,7 +118,7 @@ public class VectorLib {
 	}
 
 	public static Vector[] getHelix(double radius, double height, double step, double density) {
-		int points = (int) ( height * 2 * Math.PI * radius * density);
+		int points = (int) ( Math.abs(height) * 2 * Math.PI * Math.abs(radius) * density);
 		double deltaAngle = 360 * height / (step * points);
 		double deltaHeight = height / points;
 		Vector[] vectors = new Vector[points];
@@ -118,11 +130,10 @@ public class VectorLib {
 
 	public static Vector[] linkAll(Vector[] vectors, double density) {
 		List<Vector> vecs = new ArrayList<Vector>();
-		for (Vector v1 : vectors) {
-			for (Vector v2 : vectors) {
-				if (!v1.equals(v2)) {
-					vecs.addAll(Arrays.asList(linkLine(v1, v2, density)));
-				}
+		int length = vectors.length;
+		for (int i = 0; i < length - 1; i++) {
+			for (int j = i + 1; j < length ; j++) {
+				vecs.addAll(Arrays.asList(linkLine(vectors[i], vectors[j], density)));
 			}
 		}
 		return vecs.toArray(new Vector[vecs.size()]);
@@ -137,11 +148,23 @@ public class VectorLib {
 		return midpoint;
 	}
 
-	public static Vector[] offset(Vector[] vectors, Vector offset) {
+	public static Vector[] move(Vector[] vectors, Vector offset) {
 		for (Vector v: vectors) {
 			v.add(offset);
 		}
 		return vectors;
+	}
+
+	public static Vector[] offset(Vector[] vectors, Vector[] offsets) {
+		Vector[] offset = new Vector[vectors.length * offsets.length];
+		int i = 0;
+		for (Vector v: vectors) {
+			for (Vector o: offsets) {
+				offset[i] = v.clone().add(o);
+				i++;
+			}
+		}
+		return offset;
 	}
 
 	public static Vector[] pointReflection(Vector[] vectors, Vector center) {
@@ -160,28 +183,28 @@ public class VectorLib {
 
 	public static Vector[] rotate(Vector[] vectors, Vector axis, double angle) {
 		for (Vector v: vectors) {
-			v = VectorMath.rot(v, axis, angle);
+			VectorMath.rot(v, axis, angle);
 		}
 		return  vectors;
 	}
 
 	public static Vector[] rotateX(Vector[] vectors, double angle) {
 		for (Vector v: vectors) {
-			v = VectorMath.rotX(v, angle);
+			VectorMath.rotX(v, angle);
 		}
 		return vectors;
 	}
 
 	public static Vector[] rotateY(Vector[] vectors, double angle) {
 		for (Vector v: vectors) {
-			v = VectorMath.rotY(v, angle);
+			VectorMath.rotY(v, angle);
 		}
 		return vectors;
 	}
 
 	public static Vector[] rotateZ(Vector[] vectors, double angle) {
 		for (Vector v: vectors) {
-			v = VectorMath.rotZ(v, angle);
+			VectorMath.rotZ(v, angle);
 		}
 		return vectors;
 	}
@@ -240,5 +263,15 @@ public class VectorLib {
 			i++;
 		}
 		return vectors;
+	}
+
+	public static Vector[] clone(Vector[] vectors) {
+		Vector[] clones = new Vector[vectors.length];
+		int i = 0;
+		for (Vector v: vectors) {
+			clones[i] = v.clone();
+			i++;
+		}
+		return clones;
 	}
 }

@@ -56,6 +56,17 @@ public class LocationLib {
 		return locations;
 	}
 
+	public static Location[] getPath(Location[] locations, double density) {
+		if (locations.length > 0) {
+			Vector[] path = VectorLib.getPath(VectorLib.toVector(locations), density);
+			World world = locations[0].getWorld();
+			return toLocation(path, world);
+		}
+		else {
+			return new Location[]{};
+		}
+	}
+
 	public static Location[] getPolygon(Location[] locations, int points, double radius) {
 		Vector[] polygon = VectorLib.getPolygon(points, radius);
 		return offset(locations, polygon);
@@ -85,14 +96,8 @@ public class LocationLib {
 		if (locations.length > 0) {
 			Vector[] vectors = VectorLib.toVector(locations);
 			Vector[] linked = VectorLib.linkAll(vectors, density);
-			Location[] linkedLocations = new Location[linked.length];
 			World world = locations[0].getWorld();
-			int i = 0;
-			for (Vector v: linked) {
-				linkedLocations[i] = v.toLocation(world);
-				i++;
-			}
-			return linkedLocations;
+			return toLocation(linked, world);
 		}
 		else {
 			return new Location[] {};

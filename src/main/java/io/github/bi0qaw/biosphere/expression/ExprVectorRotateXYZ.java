@@ -54,14 +54,15 @@ public class ExprVectorRotateXYZ extends SimpleExpression<Vector> {
 	protected Vector[] get(Event e) {
 		float a = angle.getSingle(e).floatValue();
 		a = -a; //Skript uses clockwise and VectorMath anti-clockwise rotation
+		Vector[] clones = VectorLib.clone(vectors.getArray(e));
 		if (axis == 1) {
-			return VectorLib.rotateX(vectors.getArray(e).clone(), a);
+			return VectorLib.rotateX(clones, a);
 		}
 		else if (axis == 2) {
-			return VectorLib.rotateY(vectors.getArray(e).clone(), a);
+			return VectorLib.rotateY(clones, a);
 		}
 		else {
-			return VectorLib.rotateZ(vectors.getArray(e).clone(), a);
+			return VectorLib.rotateZ(clones, a);
 		}
 	}
 

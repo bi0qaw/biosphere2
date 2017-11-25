@@ -56,7 +56,7 @@ public class ExprVectorRotate extends SimpleExpression<Vector> {
 		float a = angle.getSingle(e).floatValue();
 		a = -a; //Skript uses clockwise and VectorMath anti-clockwise rotation
 		Vector ax = axis.getSingle(e).clone().normalize();
-		return VectorLib.rotate(vectors.getArray(e).clone(), ax, a);
+		return VectorLib.rotate(VectorLib.clone(vectors.getArray(e)), ax, a);
 	}
 
 }

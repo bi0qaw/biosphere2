@@ -1,3 +1,63 @@
+function hsvtorgb(col: text, h: number, sat: number, val: number) :: number:
+    set {_h} to mod({_h}, 360)
+    if {_sat} > 1:
+        set {_sat} to 1
+    else if {_sat} < 0:
+        set {_sat} to 0
+    if {_val} > 1:
+        set {_val} to 1
+    else if {_val} < 0:
+        set {_val} to 0
+    set {_c} to {_val} * {_sat}
+    set {_hh} to {_h}/60
+    set {_t} to mod({_hh}, 2) - 1
+    set {_x} to {_c} * (1 - abs({_t}))
+    set {_m} to {_v} - {_c}
+    set {_ret} to {_m}
+    if {_col} is "red" or "r":
+        if {_hh} < 1:
+            add {_c} to {_ret}
+        else if {_hh} < 2:
+            add {_x} to {_ret}
+        else if {_hh} < 4:
+            set {_ret} to {_ret}
+        else if {_hh} < 5:
+            add {_x} to {_ret}
+        else if {_hh} < 6:
+            add {_c} to {_ret}
+    else if {_col} is "green" or "g":
+        if {_hh} < 1:
+            add {_x} to {_ret}
+        else if {_hh} < 2:
+            add {_c} to {_ret}
+        else if {_hh} < 3:
+            add {_c} to {_ret}
+        else if {_hh} < 4:
+            add {_x} to {_ret}
+    else if {_col} is "blue" or "b":
+        if {_hh} < 2:
+            set {_ret} to {_ret}
+        else if {_hh} < 3:
+            add {_x} to {_ret}
+        else if {_hh} < 5:
+            add {_c} to {_ret}
+        else if {_hh} < 6:
+            add {_x} to {_ret}
+    return 0-{_ret}
+
+function rgb(r: number, g: number, b: number, locs: locations):
+    loop {_locs::*}:
+        set {_x} to x-coordinate of loop-value
+        set {_y} to y-coordinate of loop-value
+        set {_z} to z-coordinate of loop-value
+        execute command "/particle reddust %{_x}% %{_y}% %{_z}% %{_r}% %{_g}% %{_b}% 1"
+
+function rainbow(h: number, locs: locations):
+    set {_r} to hsvtorgb("r", {_h}, 1, 1)
+    set {_g} to hsvtorgb("g", {_h}, 1, 1)
+    set {_b} to hsvtorgb("b", {_h}, 1, 1)
+    rgb({_r}, {_g}, {_b}, {_locs::*})
+
 command /rainbow-halo:
     trigger:
         set {_circle::*} to circle with radius 0.75 and density 5

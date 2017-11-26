@@ -1,0 +1,61 @@
+command /rainbow-halo:
+    trigger:
+        set {_circle::*} to circle with radius 0.75 and density 5
+        set {_hue} to 0
+        set {run} to true
+        while {run} is true:
+            loop {_circle::*}:
+                set {_loc} to location 2 above player offset by loop-value in frame of player
+                rainbow({_hue}, {_loc})
+                add 5 to {_hue}
+                if {_hue} > 360:
+                    set {_hue} to {_hue} - 360
+                if {run} is true:
+                    wait 2 ticks
+                else:
+                    stop trigger
+
+command /rainbow-yaw-helix:
+    trigger:
+        set {_helix::*} to helix with radius 1, height 2, step 0.25 and density 10
+        set {_hue} to 0
+        set {run} to true
+        while {run} is true:
+            loop {_helix::*}:
+                set {_loc} to player offset by loop-value
+                set {_yaw} to yaw of player
+                rainbow({_yaw}, {_loc})
+                if {run} is true:
+                    wait 1 tick
+                else:
+                    stop trigger
+
+function rainbow_lines(p: player):
+    set {_yaw} to random number from 0 to 360
+    set {_startheight} to random number from -0.5 to 1.5
+    set {_endheight} to {_startheight} + random number from 1 to 2
+    set {_hue} to random number from 0 to 360
+    set {_start} to cylindrical vector with radius 0.75, yaw {_yaw} and height {_startheight}
+    set {_end} to cylindrical vector with radius 0.75, yaw {_yaw} and height {_endheight}
+    set {_line::*} to vector line from {_start} to {_end} with density 5
+    loop {_line::*}:
+        set {_loc} to {_p} offset by loop-value
+        rainbow({_hue}, {_loc})
+        if {run} is true:
+            wait 1 tick
+        else:
+            stop loop
+
+command /rainbow-lines:
+    trigger:
+        set {_line::*} to vector line from vector 0, 0, 0 to vector 0, 1, 0 with density 5
+        set {_size} to size of {_line::*}
+        set {run} to true
+        while {run} is true:
+            chance of 50%:
+                rainbow_lines(player)
+            wait 5 ticks
+
+command /stopeffect:
+    trigger:
+        clear {run}

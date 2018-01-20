@@ -23,7 +23,7 @@ import ch.njol.util.Kleenean;
 public class ExprLocationPolygon extends SimpleExpression<Location>{
 
 	private Expression<Location> locations;
-	private Expression<Integer> points;
+	private Expression<Number> points;
 	private Expression<Number> radius;
 
 	@Override
@@ -40,7 +40,7 @@ public class ExprLocationPolygon extends SimpleExpression<Location>{
 	@Override
 	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, ParseResult arg3) {
 		locations = (Expression<Location>) expr[0];
-		points = (Expression<Integer>) expr[1];
+		points = (Expression<Number>) expr[1];
 		radius = (Expression<Number>) expr[2];
 		return true;
 	}

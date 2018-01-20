@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 			"#shows particles in the shape of a hexagon (6 points) at the player"})
 public class ExprVectorPolygonOutline extends SimpleExpression<Vector> {
 
-	private Expression<Integer> vertices;
+	private Expression<Number> vertices;
 	private Expression<Number> radius;
 	private Expression<Number> density;
 
@@ -37,7 +37,7 @@ public class ExprVectorPolygonOutline extends SimpleExpression<Vector> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, SkriptParser.ParseResult arg3) {
-		vertices = (Expression<Integer>) expr[0];
+		vertices = (Expression<Number>) expr[0];
 		radius = (Expression<Number>) expr[1];
 		density = (Expression<Number>) expr[2];
 		return true;

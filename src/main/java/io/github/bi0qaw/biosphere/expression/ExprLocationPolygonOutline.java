@@ -21,7 +21,7 @@ import ch.njol.util.Kleenean;
 public class ExprLocationPolygonOutline extends SimpleExpression<Location>{
 
 	private Expression<Location> locations;
-	private Expression<Integer> points;
+	private Expression<Number> points;
 	private Expression<Number> radius;
 	private Expression<Number> density;
 
@@ -39,7 +39,7 @@ public class ExprLocationPolygonOutline extends SimpleExpression<Location>{
 	@Override
 	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, ParseResult arg3) {
 		locations = (Expression<Location>) expr[0];
-		points = (Expression<Integer>) expr[1];
+		points = (Expression<Number>) expr[1];
 		radius = (Expression<Number>) expr[2];
 		density = (Expression<Number>) expr[3];
 		return true;
@@ -53,7 +53,7 @@ public class ExprLocationPolygonOutline extends SimpleExpression<Location>{
 	@Override
 	@Nullable
 	protected Location[] get(Event e) {
-		int p = points.getSingle(e).intValue();
+		int p =  points.getSingle(e).intValue();
 		double r = radius.getSingle(e).doubleValue();
 		double d = density.getSingle(e).doubleValue();
 		return LocationLib.getPolygonOutline(locations.getArray(e), p, r, d);

@@ -3,6 +3,7 @@ package io.github.bi0qaw.biosphere.util;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,6 +80,39 @@ public class VectorLib {
 		}
 		vectors.addAll(Arrays.asList(linkLine(polygon[polygon.length - 1], polygon[0], density)));
 		return vectors.toArray(new Vector[vectors.size()]);
+	}
+
+	public static Vector[] getBox(Vector vector1, Vector vector2) {
+		Vector[] vectors = new Vector[8];
+		Vector lower = VectorMath.getLower(vector1, vector2);
+		Vector upper = VectorMath.getUpper(vector1, vector2);
+		vectors[0] = lower.clone();
+		vectors[1] = new Vector(upper.getX(), lower.getY(), lower.getZ());
+		vectors[2] = new Vector(lower.getX(), upper.getY(), lower.getZ());
+		vectors[3] = new Vector(lower.getX(), lower.getY(), upper.getZ());
+		vectors[4] = new Vector(upper.getX(), upper.getY(), lower.getZ());
+		vectors[5] = new Vector(upper.getX(), lower.getY(), upper.getZ());
+		vectors[6] = new Vector(lower.getX(), upper.getY(), upper.getZ());
+		vectors[7] = upper.clone();
+		return vectors;
+	}
+
+	public static Vector[] getBoxOutline(Vector vector1, Vector vector2, double density) {
+		Vector[] box = getBox(vector1, vector2);
+		List<Vector> vecs = new ArrayList<Vector>();
+		vecs.addAll(Arrays.asList(linkLine(box[0], box[1], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[0], box[2], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[0], box[3], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[1], box[4], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[1], box[5], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[2], box[4], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[2], box[6], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[3], box[5], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[3], box[6], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[4], box[7], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[5], box[7], density)));
+		vecs.addAll(Arrays.asList(linkLine(box[6], box[7], density)));
+		return vecs.toArray(new Vector[vecs.size()]);
 	}
 
 	public static Vector[] getCube(double radius) {

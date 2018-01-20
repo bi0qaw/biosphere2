@@ -6,7 +6,7 @@
 
     <groupId>io.github.bi0qaw</groupId>
     <artifactId>biosphere2</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <build>
         <plugins>
             <plugin>

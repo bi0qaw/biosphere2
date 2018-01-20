@@ -27,6 +27,8 @@ public class Biosphere extends JavaPlugin {
 		Skript.registerExpression(ExprFrameFromYawPitch.class, Frame.class, ExpressionType.SIMPLE, "frame with yaw %number% and pitch %number%");
 		Skript.registerExpression(ExprFrameYawPitch.class, Number.class, ExpressionType.PROPERTY, "frame (0¦yaw|1¦pitch) of %frame%");
 
+		Skript.registerExpression(ExprLocationBox.class, Location.class, ExpressionType.SIMPLE, "box between %location% and %location%");
+		Skript.registerExpression(ExprLocationBoxOutline.class, Location.class, ExpressionType.SIMPLE, "box outline between %location% and %location% with density %number%");
 		Skript.registerExpression(ExprLocationCircle.class, Location.class, ExpressionType.SIMPLE, "circle[s] at %locations%[ with] radius %number%(,| and) density %number%");
 		Skript.registerExpression(ExprLocationCube.class, Location.class, ExpressionType.SIMPLE, "cube[s] at %locations% with radius %number%");
 		Skript.registerExpression(ExprLocationCubeOutline.class, Location.class, ExpressionType.SIMPLE, "cube[s] outline[s] at %locations% with radius %number%(,| and) density %number%");
@@ -39,8 +41,8 @@ public class Biosphere extends JavaPlugin {
 		Skript.registerExpression(ExprLocationMove.class, Location.class, ExpressionType.SIMPLE, "%locations% with center %location% (moved|shifted) to %location%", "%locations% with center %location% (moved|shifted) to %location%");
 		Skript.registerExpression(ExprLocationOffset.class, Location.class, ExpressionType.SIMPLE, "[location[s]] %locations% offset by %vectors%");
 		Skript.registerExpression(ExprLocationPath.class, Location.class, ExpressionType.SIMPLE, "[location ]path between %locations% with density %number%");
-		Skript.registerExpression(ExprLocationPolygon.class, Location.class, ExpressionType.SIMPLE, "polygon[s] at %locations% with %integer% (vertex|vertices|vertexes|points)(,| and) radius %number%");
-		Skript.registerExpression(ExprLocationPolygonOutline.class, Location.class, ExpressionType.SIMPLE, "polygon[s] outline[s] at %locations% with %integer% (vertex|vertices|vertexes|points)(,| and) radius %number%(,| and) density %number%");
+		Skript.registerExpression(ExprLocationPolygon.class, Location.class, ExpressionType.SIMPLE, "polygon[s] at %locations% with %number% (vertex|vertices|vertexes|points)(,| and) radius %number%");
+		Skript.registerExpression(ExprLocationPolygonOutline.class, Location.class, ExpressionType.SIMPLE, "polygon[s] outline[s] at %locations% with %number% (vertex|vertices|vertexes|points)(,| and) radius %number%(,| and) density %number%");
 		Skript.registerExpression(ExprLocationReflection.class, Location.class, ExpressionType.SIMPLE, "%locations% (mirrored|reflected) at %location%[ (in|with) direction [of ]%-vector%]");
 		Skript.registerExpression(ExprLocationRotate.class, Location.class, ExpressionType.SIMPLE, "%locations% rotated around %vector% at %location% (with angle|by) %number%[ degree[s]]");
 		Skript.registerExpression(ExprLocationRotXYZ.class, Location.class, ExpressionType.SIMPLE, "%locations% rotated around (1¦x|2¦y|3¦z)(-| )axis at %location% (with angle|by) %number%[ degree[s]]");
@@ -49,6 +51,8 @@ public class Biosphere extends JavaPlugin {
 		Skript.registerExpression(ExprLocationSphereLoc.class, Location.class, ExpressionType.SIMPLE, "spher(e|ic[al]) (coordinate[s]|position[s]|location[s]) at %locations% with radius %number%(,| and) yaw %number%(,| and) pitch %number%");
 		Skript.registerExpression(ExprLocationSphereRand.class, Location.class, ExpressionType.SIMPLE, "random sphere[s] at %locations% with radius %number%(,| and) density %number%");
 
+		Skript.registerExpression(ExprVectorBox.class, Vector.class, ExpressionType.SIMPLE, "vector box between %vector% and %vector%");
+		Skript.registerExpression(ExprVectorBoxOutline.class, Vector.class, ExpressionType.SIMPLE, "vector box outline between %vector% and %vector% with density %number%");
 		Skript.registerExpression(ExprVectorCircle.class, Vector.class, ExpressionType.SIMPLE, "[vector ]circle with radius %number%(,| and) density %number%");
 		Skript.registerExpression(ExprVectorCube.class, Vector.class, ExpressionType.SIMPLE, "[vector ]cube with radius %number%");
 		Skript.registerExpression(ExprVectorCubeOutline.class, Vector.class, ExpressionType.SIMPLE, "[vector ]cube outline with radius %number%(,| and) density %number%");
@@ -61,8 +65,8 @@ public class Biosphere extends JavaPlugin {
 		Skript.registerExpression(ExprVectorMove.class, Vector.class, ExpressionType.SIMPLE, "[vector[s] ]%vectors% moved by %vectors%");
 		Skript.registerExpression(ExprVectorOffset.class, Vector.class, ExpressionType.SIMPLE, "vector[s] %vectors% offset by %vectors%");
 		Skript.registerExpression(ExprVectorPath.class, Vector.class, ExpressionType.SIMPLE, "vector[s] path between %vectors% with density %number%");
-		Skript.registerExpression(ExprVectorPolygon.class, Vector.class, ExpressionType.SIMPLE, "[vector ]polygon with %integer% (vertex|vertices|vertexes|points)(,| and) radius %number%");
-		Skript.registerExpression(ExprVectorPolygonOutline.class, Vector.class, ExpressionType.SIMPLE, "[vector ]polygon outline with %integer% (vertex|vertices|vertexes|points)(,| and) radius %number%(,|and) density %number%");
+		Skript.registerExpression(ExprVectorPolygon.class, Vector.class, ExpressionType.SIMPLE, "[vector ]polygon with %number% (vertex|vertices|vertexes|points)(,| and) radius %number%");
+		Skript.registerExpression(ExprVectorPolygonOutline.class, Vector.class, ExpressionType.SIMPLE, "[vector ]polygon outline with %number% (vertex|vertices|vertexes|points)(,| and) radius %number%(,|and) density %number%");
 		Skript.registerExpression(ExprVectorReflection.class, Vector.class, ExpressionType.SIMPLE, "vector[s] %vectors% (mirrored|reflected) at %vector%[ (in|with) direction [of ]%-vector%]");
 		Skript.registerExpression(ExprVectorRotate.class, Vector.class, ExpressionType.SIMPLE, "[vector[s] ]%vectors% rotated around %vector% (with angle|by) %number%[ degree[s]]");
 		Skript.registerExpression(ExprVectorRotateXYZ.class, Vector.class, ExpressionType.SIMPLE, "[vector[s] ]%vectors% rotated around (1¦x|2¦y|3¦z)(-| )axis (with angle|by) %number%[ degree[s]]");

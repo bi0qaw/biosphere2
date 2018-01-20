@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 		"#shows particles in the shape of a triangle at the player"})
 public class ExprVectorPolygon extends SimpleExpression<Vector>{
 
-	private Expression<Integer> vertices;
+	private Expression<Number> vertices;
 	private Expression<Number> radius;
 
 	@Override
@@ -36,7 +36,7 @@ public class ExprVectorPolygon extends SimpleExpression<Vector>{
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, SkriptParser.ParseResult arg3) {
-		vertices = (Expression<Integer>) expr[0];
+		vertices = (Expression<Number>) expr[0];
 		radius = (Expression<Number>) expr[1];
 		return true;
 	}

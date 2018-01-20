@@ -14,6 +14,16 @@ public class LocationLib {
 		return offset(locations, circle);
 	}
 
+	public static Location[] getBox(Location location1, Location location2) {
+		Vector[] box = VectorLib.getBox(location1.toVector(), location2.toVector());
+		return toLocation(box, location1.getWorld());
+	}
+
+	public static Location[] getBoxOutline(Location location1, Location location2, double density) {
+		Vector[] boxoutline = VectorLib.getBoxOutline(location1.toVector(), location2.toVector(), density);
+		return toLocation(boxoutline, location1.getWorld());
+	}
+
 	public static Location[] getCube(Location[] locations, double radius) {
 		Vector[] cube = VectorLib.getCube(radius);
 		return offset(locations, cube);

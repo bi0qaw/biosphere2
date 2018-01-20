@@ -33,6 +33,20 @@ public class VectorMath {
 		return new Vector(x,0, z).multiply(div).setY(y);
 	}
 
+	public static Vector getLower(Vector vector1, Vector vector2) {
+		double x = Math.min(vector1.getX(), vector2.getX());
+		double y = Math.min(vector1.getY(), vector2.getY());
+		double z = Math.min(vector1.getZ(), vector2.getZ());
+		return new Vector(x, y, z);
+	}
+
+	public static Vector getUpper(Vector vector1, Vector vector2) {
+		double x = Math.max(vector1.getX(), vector2.getX());
+		double y = Math.max(vector1.getY(), vector2.getY());
+		double z = Math.max(vector1.getZ(), vector2.getZ());
+		return new Vector(x, y, z);
+	}
+
 	public static float getYaw(Vector vector) {
 		if (((Double) vector.getX()).equals((double) 0) && ((Double) vector.getZ()).equals((double) 0)){
 			return 0;

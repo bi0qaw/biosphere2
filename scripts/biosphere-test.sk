@@ -1,0 +1,256 @@
+command /biosphere-test:
+    trigger:
+        set {_num} to 180 in radian
+        send "---------------------------"
+        send "in radian"
+        send "%{_num}% == 3.14"
+        set {_num} to 3.14 in degree
+        send "---------------------------"
+        send "in degree"
+        send "%{_num}% == 179.91"
+        set {_frame} to frame of player
+        send "---------------------------"
+        send "frame of player"
+        send "%{_frame}% == frame:yaw: %yaw of player%, pitch: %pitch of player%"
+        set {_yaw} to frame yaw of {_frame}
+        set {_pitch} to frame pitch of {_frame}
+        send "---------------------------"
+        send "yaw/pitch of frame"
+        send "yaw: %{_yaw}%, pitch: %{_pitch}% == yaw: %yaw of player%, pitch: %pitch of player%"
+        set frame yaw of {_frame} to 50
+        set frame pitch of {_frame} to -80
+        set {_yaw} to frame yaw of {_frame}
+        set {_pitch} to frame pitch of {_frame}
+        send "---------------------------"
+        send "set yaw/pitch of frame"
+        send "yaw: %{_yaw}%, pitch: %{_pitch}% == yaw: 50, pitch: -80"
+        add 10 to frame yaw of {_frame}
+        remove 10 from frame pitch of {_frame}
+        set {_yaw} to frame yaw of {_frame}
+        set {_pitch} to frame pitch of {_frame}
+        send "---------------------------"
+        send "add/remove yaw/pitch of frame"
+        send "yaw: %{_yaw}%, pitch: %{_pitch}% == yaw: 60, pitch: -90"
+        set {_frame} to frame with yaw 40 and pitch 10
+        set {_yaw} to frame yaw of {_frame}
+        set {_pitch} to frame pitch of {_frame}
+        send "---------------------------"
+        send "frame from yaw and pitch"
+        send "yaw: %{_yaw}%, pitch: %{_pitch}% == yaw: 40, pitch: 10"
+        set {_world} to world of player
+        set {_l::1} to location(1, 2, 3, {_world})
+        set {_l::2} to location(3, 2, 1, {_world})
+        set {_l::3} to location(2, 2, 2, {_world})
+        set {_midpoint} to midpoint of {_l::*}
+        send "---------------------------"
+        send "midpoint of locations"
+        send "%{_midpoint}% == %{_l::3}%"
+        set {_l1} to location(0, 10, 20, {_world})
+        set {_l2} to location(10, 20, 30, {_world})
+        set {_l::*} to linear coordinate 0.1 from {_l1} to {_l2}
+        set {_coord} to location(1, 11, 21, {_world})
+        send "---------------------------"
+        send "location linear coordinate"
+        send "%{_l::1}% == %{_coord}%"
+        set {_l::*} to cylinder coordinate at {_l1} with radius 2, yaw 90, height 3
+        set {_loc2} to location(-2, 13, 20, {_world})
+        send "---------------------------"
+        send "location cylindrical coordinate"
+        send "%{_l::1}% == %{_loc2}%"
+        set {_l::*} to spherical coordinate at {_l1} with radius 3*sqrt(2), yaw 90 and pitch 45
+        set {_loc2} to location(-3, 7, 20, {_world})
+        send "---------------------------"
+        send "location spherical coordinate"
+        send "%{_l::1}% == %{_loc2}%"
+        set {_origin} to location(0, 0, 0, {_world})
+        send "---------------------------"
+        send "location rotate around x/y/z axis"
+        set {_l::*} to {_l1} rotated around x-axis at {_origin} with angle 90
+        set {_loc2} to location(0, 20, -10, {_world})
+        send "%{_l::1}% == %{_loc2}%"
+        set {_l::*} to {_l1} rotated around y-axis at {_origin} with angle 90
+        set {_loc2} to location(-20, 10, 0, {_world})
+        send "%{_l::1}% == %{_loc2}%"
+        set {_l::*} to {_l1} rotated around z-axis at {_origin} with angle 90
+        set {_loc2} to location(10, 0, 20, {_world})
+        send "%{_l::1}% == %{_loc2}%"
+        set {_l::*} to {_l1} reflected at {_origin}
+        set {_loc2} to location(0, -10, -20, {_world})
+        set {_l2::*} to {_l1} reflected at {_origin} in direction vector 0, -1, 1
+        set {_loc3} to location(0, 10, -20, {_world})
+        send "---------------------------"
+        send "location reflection"
+        send "%{_l::1}% == %{_loc2}%"
+        send "%{_l2::1}% == %{_loc3}%"
+        set {_l::*} to {_l2} scaled at {_origin} by -1
+        set {_loc2} to location(-10, -20, -30, {_world})
+        set {_l2::*} to {_l2} scaled at {_origin} by -1 and direction vector 1, 2, 3
+        set {_loc3} to location(-10, -40, -90, {_world})
+        send "---------------------------"
+        send "location scaling"
+        send "%{_l::1}% == %{_loc2}%"
+        send "%{_l2::1}% == %{_loc3}%"
+        set {_l::*} to {_l1} with center {_origin} moved to {_l2}
+        set {_loc2} to location(10, 30, 50, {_world})
+        send "---------------------------"
+        send "location shift/move"
+        send "%{_l::1}% == %{_loc2}%"
+        set {_l} to {_l1} offset by vector 1, 2, 3
+        set {_loc} to location(1, 12, 23, {_world})
+        send "---------------------------"
+        send "location offset"
+        send "%{_l}% == %{_loc}%"
+        set {_v1} to vector 1, 0, 0 in frame of player
+        set {_v2} to vector from player to location 1 in front of player
+        send "---------------------------"
+        send "vector in frame"
+        send "%{_v1}% == %{_v2}%"
+        set {_v::1} to vector 1, 2, 3
+        set {_v::2} to vector 3, 2, 1
+        set {_v::3} to vector 2, 2, 2
+        set {_midpoint} to vector midpoint of {_v::*}
+        set {_vec} to vector 2, 2, 2
+        send "---------------------------"
+        send "vector midpoint"
+        send "%{_midpoint}% == %{_vec}%"
+        set {_v::*} to vector 1, 2, 3 moved by vector 1, 2, 3
+        set {_vec} to vector 2, 4, 6
+        send "---------------------------"
+        send "vector moved"
+        send "%{_v::1}% == %{_vec}%"
+        set {_v::*} to vector vector 2, 4, 6 reflected at vector 1, 2, 3
+        set {_v2} to vector 0, 0, 0
+        set {_v1::*} to vector vector 2, 4, 6 reflected at vector 1, 2, 3 in direction vector 1, 2, 3
+        set {_v3} to vector 0, -2, -6
+        send "---------------------------"
+        send "vector reflection"
+        send "%{_v::1}% == %{_v2}%"
+        send "%{_v1::1}% == %{_v3}%"
+        set {_v1} to vector 1, 2, 3 rotated around vector 1, 0, 0 with angle 90
+        set {_v2} to vector 1, 2, 3 rotated around vector 0, 1, 0 with angle 90
+        set {_v3} to vector 1, 2, 3 rotated around vector 0, 0, 1 with angle 90
+        send "---------------------------"
+        send "vector rotate axis"
+        send "%{_v1}% == %vector 1, 3, -2%"
+        send "%{_v2}% == %vector -3, 2, 1%"
+        send "%{_v3}% == %vector 2, -1, 3%"
+        set {_v1} to vector 1, 2, 3 rotated around x-axis with angle 90
+        set {_v2} to vector 1, 2, 3 rotated around y-axis with angle 90
+        set {_v3} to vector 1, 2, 3 rotated around z-axis with angle 90
+        send "---------------------------"
+        send "vector rotate x/y/z-axis"
+        send "%{_v1}% == %vector 1, 3, -2%"
+        send "%{_v2}% == %vector -3, 2, 1%"
+        send "%{_v3}% == %vector 2, -1, 3%"
+        set {_v1} to vector 1, 2, 3 scaled by 2
+        set {_v2} to vector 1, 2, 3 scaled by 2 with direction vector 1, 2, 3
+        send "---------------------------"
+        send "vector scale"
+        send "%{_v1}% == %vector 2, 4, 6%"
+        send "%{_v2}% == %vector 2, 8, 18%"
+
+command /bs-test <text> <text>:
+    trigger:
+        if arg-1 is "l", "loc" or "location":
+            set {_l} to location 5 in front of player
+            set {_l1} to location 5 in front and 5 left of player
+            set {_l2} to location 5 in front and 5 right of player
+            if arg-2 is "box":
+                set {_box::*} to box between location 2.5 left and 2.5 in front of player and location 2.5 right, 7.5 in front and 5 above player
+                send "%{_box::*}%/"
+                show happy villager at {_box::*}
+            else if arg-2 is "box-outline":
+                set {_box::*} to box outline between location 2.5 left and 2.5 in front of player and location 2.5 right, 7.5 in front and 5 above player with density 5
+                show happy villager at {_box::*}
+            else if arg-2 is "circle":
+                set {_circle::*} to circle at {_l} with radius 3 and density 5
+                show happy villager at {_circle::*}
+            else if arg-2 is "cube":
+                set {_cube::*} to cube at {_l} with radius 3
+                show happy villager at {_cube::*}
+            else if arg-2 is "cube-outline":
+                set {_cubeoutline::*} to cube outline at {_l} with radius 3 and density 5
+                show happy villager at {_cubeoutline::*}
+            else if arg-2 is "helix":
+                set {_helix::*} to helix at {_l} with radius 2, height 5, step 1 and density 5
+                show happy villager at {_helix::*}
+            else if arg-2 is "line":
+                set {_line::*} to line from {_l1} to {_l2} with density 5
+                show happy villager at {_line::*}
+            else if arg-2 is "linked":
+                set {_l::1} to {_l1}
+                set {_l::2} to {_l2}
+                set {_linked::*} to {_l::*} linked with density 5
+                show happy villager at {_linked::*}
+            else if arg-2 is "path":
+                set {_poly::*} to polygon at {_l} with 7 points and radius 3
+                set {_path::*} to path between {_poly::*} with density 5
+                show happy villager at {_path::*}
+            else if arg-2 is "poly" or "polygon":
+                set {_poly::*} to polygon at {_l} with 10 points and radius 3
+                show happy villager at {_poly::*}
+            else if arg-2 is "poly-outline" or "polygon-outline":
+                set {_polyoutline::*} to polygon outline at {_l} with 10 vertices, radius 3 and density 5
+                show happy villager at {_polyoutline::*}
+            else if arg-2 is "sphere":
+                set {_sphere::*} to sphere at {_l} with radius 3 and density 5
+                show happy villager at {_sphere::*}
+            else if arg-2 is "random-sphere":
+                set {_randomsphere::*} to random sphere at {_l} with radius 3 and density 5
+                show happy villager at {_randomsphere::*}
+            else:
+                send "circle, cube, cube-outline, helix, line, linked, path, polygon, polygon-outline, sphere and random-sphere"
+        else if arg-1 is "v", "vec" or "vector":
+            set {_l} to location 5 in front of player
+            set {_l1} to location 5 in front and 5 left of player
+            set {_l2} to location 5 in front and 5 right of player
+            if arg-2 is "box":
+                set {_box::*} to vector box between vector -2.5, -2.5, -2.5 and vector 2.5, 2.5, 2.5
+                show happy villager at {_l} offset by {_box::*}
+            else if arg-2 is "box-outline":
+                set {_box::*} to vector box outline between vector -2.5, -2.5, -2.5 and vector 2.5, 2.5, 2.5 with density 5
+                show happy villager at {_l} offset by {_box::*}
+            else if arg-2 is "circle":
+                set {_circle::*} to circle with radius 3 and density 5
+                show happy villager at {_l} offset by {_circle::*}
+            else if arg-2 is "cube":
+                set {_cube::*} to cube with radius 3
+                show happy villager at {_l} offset by {_cube::*}
+            else if arg-2 is "cube-outline":
+                set {_cubeoutline::*} to cube outline with radius 3 and density 5
+                show happy villager at {_l} offset by {_cubeoutline::*}
+            else if arg-2 is "helix":
+                set {_helix::*} to helix with radius 2, height 5, step 1 and density 5
+                show happy villager at {_l} offset by {_helix::*}
+            else if arg-2 is "line":
+                set {_v} to vector from {_l1} to {_l2}
+                set {_line::*} to line with length vector length of {_v} and density 5
+                set {_yaw} to vector yaw of {_v}
+                set {_frame} to frame with yaw {_yaw} and pitch 0
+                show happy villager at {_l1} offset by {_line::*} in {_frame}
+            else if arg-2 is "linked":
+                set {_v::1} to vector from player to {_l1}
+                set {_v::2} to vector from player to {_l2}
+                set {_linked::*} to vectors {_v::*} linked with density 5
+                show happy villager at player offset by {_linked::*}
+            else if arg-2 is "path":
+                set {_poly::*} to polygon with 7 points and radius 3
+                set {_path::*} to vector path between {_poly::*} with density 5
+                show happy villager at {_l} offset by {_path::*}
+            else if arg-2 is "polygon":
+                set {_polygon::*} to polygon with 10 points and radius 3
+                show happy villager at {_l} offset by {_polygon::*}
+            else if arg-2 is "polygon-outline":
+                set {_polygonoutline::*} to vector polygon outline with 10 points, radius 3 and density 5
+                show happy villager at {_l} offset by {_polygonoutline::*}
+            else if arg-2 is "sphere":
+                set {_sphere::*} to sphere with radius 3 and density 5
+                show happy villager at {_l} offset by {_sphere::*}
+            else if arg-2 is "random-sphere":
+                set {_randomsphere::*} to random sphere with radius 3 and density 5
+                show happy villager at {_l} offset by {_randomsphere::*}
+            else:
+                send "circle, cube, cube-outline, helix, line, linked, path, polygon, polygon-outline, sphere and random-sphere"
+        else:
+            send "/bs-test location <shape>"
+            send "/bs-test vector <shape>"

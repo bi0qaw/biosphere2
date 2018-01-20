@@ -1,0 +1,241 @@
+function hsvtorgb(col: text, h: number, sat: number, val: number) :: number:
+    set {_h} to mod({_h}, 360)
+    if {_sat} > 1:
+        set {_sat} to 1
+    else if {_sat} < 0:
+        set {_sat} to 0
+    if {_val} > 1:
+        set {_val} to 1
+    else if {_val} < 0:
+        set {_val} to 0
+    set {_c} to {_val} * {_sat}
+    set {_hh} to {_h}/60
+    set {_t} to mod({_hh}, 2) - 1
+    set {_x} to {_c} * (1 - abs({_t}))
+    set {_m} to {_v} - {_c}
+    set {_ret} to {_m}
+    if {_col} is "red" or "r":
+        if {_hh} < 1:
+            add {_c} to {_ret}
+        else if {_hh} < 2:
+            add {_x} to {_ret}
+        else if {_hh} < 4:
+            set {_ret} to {_ret}
+        else if {_hh} < 5:
+            add {_x} to {_ret}
+        else if {_hh} < 6:
+            add {_c} to {_ret}
+    else if {_col} is "green" or "g":
+        if {_hh} < 1:
+            add {_x} to {_ret}
+        else if {_hh} < 2:
+            add {_c} to {_ret}
+        else if {_hh} < 3:
+            add {_c} to {_ret}
+        else if {_hh} < 4:
+            add {_x} to {_ret}
+    else if {_col} is "blue" or "b":
+        if {_hh} < 2:
+            set {_ret} to {_ret}
+        else if {_hh} < 3:
+            add {_x} to {_ret}
+        else if {_hh} < 5:
+            add {_c} to {_ret}
+        else if {_hh} < 6:
+            add {_x} to {_ret}
+    return 0-{_ret}
+
+function rgb(r: number, g: number, b: number, locs: locations):
+    loop {_locs::*}:
+        set {_x} to x-coordinate of loop-value
+        set {_y} to y-coordinate of loop-value
+        set {_z} to z-coordinate of loop-value
+        execute command "/particle reddust %{_x}% %{_y}% %{_z}% %{_r}% %{_g}% %{_b}% 1"
+
+function rainbow(h: number, locs: locations):
+    set {_r} to hsvtorgb("r", {_h}, 1, 1)
+    set {_g} to hsvtorgb("g", {_h}, 1, 1)
+    set {_b} to hsvtorgb("b", {_h}, 1, 1)
+    rgb({_r}, {_g}, {_b}, {_locs::*})
+
+command /color-circles:
+    trigger:
+        set {_circle::*} to circle with radius 1 and density 5
+        set {_line::*} to vector line from vector 0, 2, 0 to vector 0, 0, 0 with density 4
+        loop {_line::*}:
+            set {_hue} to random number between 0 and 360
+            set {_locs::*} to player offset by loop-value offset by {_circle::*}
+            rainbow({_hue}, {_locs::*})
+            wait 1 tick
+        set gamemode of player to spectator
+        wait 2 seconds
+        set gamemode of player to creative
+
+command /line-circle:
+    trigger:
+        set {_circle::*} to circle with radius 5 and density 1
+        set {_bigcircle::*} to {_circle::*} scaled by 1.5
+        loop size of {_circle::*} times:
+            add vector line from {_circle::%loop-number%} to {_bigcircle::%loop-number%} with density 5 to {_lines::*}
+        show happy villager at location 8 in front of player offset by {_lines::*}
+
+command /line-circle-2:
+    trigger:
+        set {_circle::*} to circle with radius 2.5 and density 2
+        set {_bigcircle::*} to {_circle::*} scaled by 3
+        set {_size} to size of {_circle::*}
+        loop {_size} times:
+            add vector line from {_circle::%loop-number%} to {_bigcircle::%loop-number%} with density 5 to {_lines::%loop-number%::*}
+        set {run} to true
+        while {run} is true:
+            set {_hue} to 50
+            loop {_size} times:
+                set {_locs::*} to location 8 in front of player offset by {_lines::%loop-number%::*}
+                add 10 to {_hue}
+                rainbow({_hue}, {_locs::*})
+                if {run} is true:
+                    wait 1 tick
+                else:
+                    stop trigger
+
+command /line-vortex:
+    trigger:
+        set {_circle::*} to circle with radius 3 and density 2
+        add {_circle::*} to {_circle::*}
+        set {_bigcircle::*} to {_circle::*} scaled by 2
+        loop size of {_circle::*} / 2 times:
+            add vector line from {_circle::%loop-number%} to {_bigcircle::%loop-number + 7%} with density 5 to {_lines::*}
+        show happy villager at location 8 in front of player offset by {_lines::*}
+
+command /line-vortex-2:
+    trigger:
+        set {_circle::*} to circle with radius 3 and density 2
+        add {_circle::*} to {_circle::*}
+        set {_bigcircle::*} to {_circle::*} scaled by 2
+        set {_smallcircle::*} to {_circle::*} scaled by 0.5
+        loop size of {_circle::*} / 2 times:
+            add vector line from {_circle::%loop-number%} to {_bigcircle::%loop-number + 7%} with density 5 to {_lines::*}
+            add vector line from {_circle::%loop-number%} to {_smallcircle::%loop-number + 7%} with density 5 to {_lines::*}
+        show happy villager at location 8 in front of player offset by {_lines::*}
+
+command /miniblock-halo <integer>:
+    trigger:
+        set {_size} to ceil(100/arg 1) * arg 1
+        set {_circle::*} to polygon with {_size} points and radius 0.6
+        add {_circle::*} to {_circle::*}
+        set {_armorstandoffset} to vector 0.3, 1.5, -0.2
+        set {_loc} to player offset by {_circle::1}
+        set {_x} to x-coordinate of {_loc}
+        set {_y} to y-coordinate of {_loc}
+        set {_z} to z-coordinate of {_loc}
+        loop arg-1 times:
+            execute command "/summon armor_stand %{_x}% %{_y}% %{_z}% {Invisible:1b,Small:1b,Invulnerable:1b,NoBasePlate:1b,NoGravity:1b,Marker:1b,ArmorItems:[{},{},{},{}],HandItems:[{id:red_glazed_terracotta,Count:1b},{}],CustomName:biosphere2-%loop-number%}"
+        set {_numadd} to {_size} / arg 1
+        set {run} to true
+        while {run} is true:
+            loop arg-1 times:
+                set {_num::%loop-number-1%} to (loop-number-1 - 1) * {_numadd}
+            loop {_size} times:
+                loop arg-1 times:
+                    add 1 to {_num::%loop-number-2%}
+                    set {_loc} to player offset by {_armorstandoffset} offset by {_circle::%{_num::%loop-number-2%}%}
+                    set {_x} to x-coordinate of {_loc}
+                    set {_y} to y-coordinate of {_loc}
+                    set {_z} to z-coordinate of {_loc}
+                    execute command "/tp @e[name=biosphere2-%loop-number-2%] %{_x}% %{_y}% %{_z}%"
+                if {run} is true:
+                    wait 1 tick
+                else:
+                    stop trigger
+
+command /rainbow-halo:
+    trigger:
+        set {_circle::*} to circle with radius 0.75 and density 5
+        set {_hue} to 0
+        set {run} to true
+        while {run} is true:
+            loop {_circle::*}:
+                set {_loc} to location 2 above player offset by loop-value in frame of player
+                rainbow({_hue}, {_loc})
+                add 5 to {_hue}
+                if {_hue} > 360:
+                    set {_hue} to {_hue} - 360
+                if {run} is true:
+                    wait 2 ticks
+                else:
+                    stop trigger
+
+command /rainbow-yaw-helix:
+    trigger:
+        set {_helix::*} to helix with radius 1, height 2, step 0.25 and density 10
+        set {_hue} to 0
+        set {run} to true
+        while {run} is true:
+            loop {_helix::*}:
+                set {_loc} to player offset by loop-value
+                set {_yaw} to yaw of player
+                rainbow({_yaw}, {_loc}) # Shows a colored particle at {_loc}
+                if {run} is true:
+                    wait 1 tick
+                else:
+                    stop trigger
+
+function rainbow_lines(p: player):
+    set {_yaw} to random number from 0 to 360
+    set {_startheight} to random number from -0.5 to 1.5
+    set {_endheight} to {_startheight} + random number from 1 to 2
+    set {_hue} to random number from 0 to 360
+    set {_start} to cylindrical vector with radius 0.75, yaw {_yaw} and height {_startheight}
+    set {_end} to cylindrical vector with radius 0.75, yaw {_yaw} and height {_endheight}
+    set {_line::*} to vector line from {_start} to {_end} with density 5
+    loop {_line::*}:
+        set {_loc} to {_p} offset by loop-value
+        rainbow({_hue}, {_loc}) # Shows a colored particle at {_loc}
+        if {run} is true:
+            wait 1 tick
+        else:
+            stop loop
+
+command /rainbow-lines:
+    trigger:
+        set {_line::*} to vector line from vector 0, 0, 0 to vector 0, 1, 0 with density 5
+        set {_size} to size of {_line::*}
+        set {run} to true
+        while {run} is true:
+            chance of 50%:
+                rainbow_lines(player) # Shows a colored particle line at {_loc}
+            wait 5 ticks
+
+command /star <integer=5>:
+    trigger:
+        set {_poly::*} to polygon with arg-1 points and radius 5
+        add {_poly::*} to {_poly::*} # This allows me to use loop-number + 2 without exceeding the list size in the loop
+        loop arg-1 times:
+            add vector line from {_poly::%loop-number%} to {_poly::%loop-number + 2%} with density 5 to {_star::*}
+        show happy villager at location 5 in front of player offset by {_star::*}
+
+command /star-2 <integer=5>:
+    trigger:
+        set {_poly::*} to polygon with arg-1 points and radius 5
+        add {_poly::*} to {_poly::*} # This allows me to use loop-number + 2 without exceeding the list size in the loop
+        loop arg-1 times:
+            add vector line from {_poly::%loop-number%} to {_poly::%loop-number + 2%} with density 5 to {_star::*}
+            add vector line from {_poly::%loop-number%} to {_poly::%loop-number + 4%} with density 5 to {_star::*}
+        show happy villager at location 5 in front of player offset by {_star::*}
+
+command /star-player <integer=7>:
+    trigger:
+        set {_poly::*} to polygon with arg-1 points and radius 5
+        add {_poly::*} to {_poly::*} # This allows me to use loop-number + 2 without exceeding the list size in the loop
+        loop arg-1 times:
+            add vector line from {_poly::%loop-number%} to {_poly::%loop-number + 2%} with density 5 to {_star::*}
+        set {_star::*} to {_star::*} rotated around z-axis by -90
+        show happy villager at location 7 in front of player's head offset by {_star::*} in frame of player
+
+
+command /stopeffect:
+    trigger:
+        clear {run}
+        execute command "/kill @e[name=biosphere2]"
+        loop 30 times:
+            execute command "/kill @e[name=biosphere2-%loop-number%]"
